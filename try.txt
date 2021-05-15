@@ -1,0 +1,29 @@
+import gym
+
+import signal
+import sys
+
+def CtrlCHandler(signum, frame):
+    env.close()
+    sys.exit(0)
+
+# box2d任务
+#env = gym.make('BipedalWalker-v3')
+
+#atari经典任务
+env = gym.make('Asterix-ram-v0')
+
+# 经典任务
+# env = gym.make('Pendulum-v0')
+ 
+for i_episode in range(100):
+    env.reset()
+    for t in range(100):
+        signal.signal(signal.SIGINT, CtrlCHandler)
+        env.render()
+        action = env.action_space.sample()
+        observation, reward, done, info = env.step(action)
+        if done:
+            print("Episode finished after {} timesteps".format(t+1))
+            break
+quit()
